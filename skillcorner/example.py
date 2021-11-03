@@ -4,15 +4,12 @@ from skillcorner.client import SkillcornerClient
 client = SkillcornerClient(username='', password='')
 
 # Get data from simple endpoint
-data = client.get_matches()
-print(data['count'])
 
 # Get data from endpoint using object id
 data = client.get_match(match_id=49364)
 print(data)
 
 # Get and save data from simple endpoint
-client.get_and_save_matches(filepath='matches.json')
 
 # Get and save data from endpoint using object id
 client.get_and_save_match(match_id=49364, filepath='match.json')
