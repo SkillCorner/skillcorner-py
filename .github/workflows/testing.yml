@@ -9,4 +9,5 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: python -m unittest discover tests
+      - run: pip install .[test]
+      - run: python -m unittest discover skillcorner/tests/
