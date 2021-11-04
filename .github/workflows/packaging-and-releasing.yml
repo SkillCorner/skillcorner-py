@@ -8,6 +8,7 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+'
 jobs:
   packaging-and-releasing:
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -41,4 +42,3 @@ jobs:
         uses: pypa/gh-action-pypi-publish@master
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
-          repository_url: https://pypi.org/legacy/
