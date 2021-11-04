@@ -20,6 +20,7 @@ jobs:
       - name: Commit changes
         uses: EndBug/add-and-commit@v7
         with:
+          branch: ${{ github.base_ref }}
           default_author: github_actions
           message: 'Incrementing patch version in setup.py'
           add: 'setup.py'
