@@ -50,12 +50,12 @@ client.get_and_save_competition_editions(competition_id=4, filepath="competition
 
 data = client.get_match_tracking_data(match_id=49364)
 print(data)
-data = client.get_match_video_tracking_data(match_id=60113, params={"frame__gt": 60000})
+data = client.get_match_video_tracking_data(match_id=63743, params={"frame__gt": 58500})
 print(data)
 data = client.get_match_data_collection(match_id=62100)
 print(data)
 
 client.get_and_save_match_tracking_data(match_id=49364, filepath="tracking_data.json")
-client.get_and_save_match_video_tracking_data(match_id=60113, filepath="video_tracking_data.json",
-                                              params={"frame__gt": 60000})
+client.get_and_save_match_video_tracking_data(match_id=63743, filepath="video_tracking_data.json",
+                                              params={"frame__gt": 58500})
 client.get_and_save_match_data_collection(match_id=62100, filepath="data_collection.json")

@@ -21,27 +21,27 @@ METHOD_URL_BINDING = {
     '_get_matches': {
         'url': '/api/matches/',
         'paginated_request': True,
-        'docs_url_anchor': 'https://skillcorner.com/api/docs/#operations-matches-matches_list',
+        'docs_url_anchor': 'operations-matches-matches_list',
     },
     '_get_teams': {
         'url': '/api/teams/',
         'paginated_request': True,
-        'docs_url_anchor': 'https://skillcorner.com/api/docs/#operations-teams-teams_list',
+        'docs_url_anchor': 'operations-teams-teams_list',
     },
     '_get_players': {
         'url': '/api/players/',
         'paginated_request': True,
-        'docs_url_anchor': 'https://skillcorner.com/api/docs/#operations-players-players_list',
+        'docs_url_anchor': '#operations-players-players_list',
     },
     '_get_competitions': {
         'url': '/api/competitions/',
         'paginated_request': True,
-        'docs_url_anchor': 'https://skillcorner.com/api/docs/#operations-competitions-competitions_list',
+        'docs_url_anchor': '#operations-competitions-competitions_list',
     },
     '_get_physical': {
         'url': '/api/physical',
         'paginated_request': False,
-        'docs_url_anchor': 'https://skillcorner.com/api/docs/#operations-physical-physical_list',
+        'docs_url_anchor': '#operations-physical-physical_list',
     }
 }
 
