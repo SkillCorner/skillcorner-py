@@ -21,27 +21,27 @@ METHOD_URL_BINDING = {
     '_get_matches': {
         'url': '/api/matches/',
         'paginated_request': True,
-        'docs_url_anchor': 'operations-matches-matches_list',
+        'docs_url_anchor': '/matches/matches_list',
     },
     '_get_teams': {
         'url': '/api/teams/',
         'paginated_request': True,
-        'docs_url_anchor': 'operations-teams-teams_list',
+        'docs_url_anchor': '/teams/teams_list',
     },
     '_get_players': {
         'url': '/api/players/',
         'paginated_request': True,
-        'docs_url_anchor': '#operations-players-players_list',
+        'docs_url_anchor': '/players/players_list',
     },
     '_get_competitions': {
         'url': '/api/competitions/',
         'paginated_request': True,
-        'docs_url_anchor': '#operations-competitions-competitions_list',
+        'docs_url_anchor': '/competitions/competitions_list',
     },
     '_get_physical': {
         'url': '/api/physical',
         'paginated_request': False,
-        'docs_url_anchor': '#operations-physical-physical_list',
+        'docs_url_anchor': '/physical/physical',
     }
 }
 
@@ -49,43 +49,43 @@ METHOD_URL_ID_BINDING = {
     '_get_match': {
         'url': '/api/match/{}',
         'paginated_request': False,
-        'docs_url_anchor': 'operations-match-match_read',
+        'docs_url_anchor': '/match/match_read',
         'id_name': 'match_id',
     },
     '_get_match_video_tracking_data': {
         'url': '/api/match/{}/video/tracking',
         'paginated_request': True,
-        'docs_url_anchor': 'operations-match-match_video_tracking_list',
+        'docs_url_anchor': '/match/match_video_tracking_list',
         'id_name': 'match_id',
     },
     '_get_match_tracking_data': {
         'url': '/api/match/{}/tracking',
         'paginated_request': False,
-        'docs_url_anchor': 'operations-match-match_tracking_list',
+        'docs_url_anchor': '/match/match_tracking_list',
         'id_name': 'match_id',
     },
     '_get_match_data_collection': {
         'url': '/api/match/{}/data_collection',
         'paginated_request': False,
-        'docs_url_anchor': 'operations-match-match_data_collection_read',
+        'docs_url_anchor': '/match/match_data_collection_read',
         'id_name': 'match_id',
     },
     '_get_team': {
         'url': '/api/teams/{}',
         'paginated_request': False,
-        'docs_url_anchor': 'operations-teams-teams_read',
+        'docs_url_anchor': '/teams/teams_read',
         'id_name': 'team_id',
     },
     '_get_player': {
         'url': '/api/players/{}',
         'paginated_request': False,
-        'docs_url_anchor': 'operations-players-players_read',
+        'docs_url_anchor': '/players/players_read',
         'id_name': 'player_id',
     },
     '_get_competition_editions': {
         'url': '/api/competitions/{}/editions',
         'paginated_request': True,
-        'docs_url_anchor': 'operations-competitions-competitions_editions_list',
+        'docs_url_anchor': '/competitions/competitions_editions_list',
         'id_name': 'competition_id',
     }
 }
