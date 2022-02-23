@@ -118,7 +118,7 @@ def _args_logging(logger):
     return decorator
 
 
-def _freeze_args(func, id_name=None, **kwargs):
+def _freeze_args(func, id_name=None, request_data=None, **kwargs):
     """Wrapper freezing url and paginated_request arguments defined for methods.
 
     This method binds and freezes function with arguments defined in METHOD_URL_BINDING and METHOD_URL_ID_BINDING.
@@ -152,6 +152,12 @@ def _freeze_args(func, id_name=None, **kwargs):
                 id_value = passed_kwargs[id_name]
                 kwargs['id'] = id_value
                 del kwargs[id_name]
+
+        if request_data:
+            if request_data in passed_kwargs:
+                request_data_value = passed_kwargs[request_data]
+                kwargs['request_data'] = request_data_value
+                del kwargs[request_data]
 
         kwargs.update(frozen_kwargs)
 
@@ -199,8 +205,12 @@ class _MethodsGenerator(type):
                                  paginated_request=value['paginated_request']))
             cls_dict[key.strip("_")] = skcr_client._generate_signature(key)
 
-            docstring = METHOD_DOCSTRING.format(url=value['url'],
-                                                docs_url_anchor=value['docs_url_anchor'])
+            docs_url_anchor = value.get('docs_url_anchor', False)
+            if docs_url_anchor:
+                docstring = METHOD_DOCSTRING.format(url=value['url'],
+                                                    docs_url_anchor=docs_url_anchor)
+            else:
+                docstring = 'Returns full {url} request response data in the json format.'.format(url=value['url'])
             cls_dict[key.strip("_")].__doc__ = docstring
 
             get_and_save_func_name = key.replace('_get_', '_get_and_save_')
@@ -225,8 +235,12 @@ class _MethodsGenerator(type):
             cls_dict[key.strip("_")] = skcr_client._generate_signature(key, id_name=value['id_name'])
 
             docks_url = value['url'].split('{}')[0] + '{' + value['id_name'] + '}' + value['url'].split('{}')[1]
-            docstring = METHOD_ID_DOCSTRING.format(url=docks_url,
-                                                   docs_url_anchor=value['docs_url_anchor'])
+            docs_url_anchor = value.get('docs_url_anchor', False)
+            if docs_url_anchor:
+                docstring = METHOD_ID_DOCSTRING.format(url=value['url'],
+                                                    docs_url_anchor=docs_url_anchor)
+            else:
+                docstring = 'Returns full {url} request response data in the json format.'.format(url=value['url'])
             cls_dict[key.strip("_")].__doc__ = docstring
 
             get_and_save_method_name = key.replace('_get_', '_get_and_save_')
@@ -275,9 +289,12 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
                 pass
         self.auth = HTTPBasicAuth(username=username, password=password)
         logger.debug(f'Authentication class: HTTPBasicAuth')
+        self.base_url = BASE_URL
+        logger.debug(f'Base url: {self.base_url}')
 
     @_args_logging(logger)
-    def _skillcorner_request(self, url, method, params, paginated_request, pagination_limit=300, timeout=30):
+    def _skillcorner_request(self, url, method, params, paginated_request, json_data=None, pagination_limit=300,
+                             timeout=30):
         """Custom Skillcorner API request
 
         Custom request function using session object to persist parameters for Skillcorner host connection.
@@ -292,7 +309,7 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
         :return dict: contains response from server
         """
 
-        url = '{}{}'.format(BASE_URL, url)
+        url = '{}{}'.format(self.base_url, url)
         logger.info(f'Connecting to: {url}')
 
         with requests.Session() as skillcorner_session:
@@ -315,6 +332,7 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
 
                     skillcorner_response = skillcorner_session.request(url=url,
                                                                        method=method,
+                                                                       json=json_data,
                                                                        params=params,
                                                                        auth=self.auth,
                                                                        timeout=timeout)
@@ -350,6 +368,7 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
                 start_timestamp = datetime.now()
                 skillcorner_response = skillcorner_session.request(url=url,
                                                                    method=method,
+                                                                   json=json_data,
                                                                    params=params,
                                                                    auth=self.auth,
                                                                    timeout=timeout)
