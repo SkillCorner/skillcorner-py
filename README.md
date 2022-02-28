@@ -2,7 +2,7 @@
 ## Goal
 Skillcorner API retrieves football tracking data.
 
-##Details
+## Details
 SkillcornerClient uses HTTPBasicAuth to authenticate to https://skillcorner.com domain. Username and password can be passed as attributes while creating SkillcornerClient instance or set as environment variables (SKC_USERNAME, SKC_PASSWORD) and read automatically by SkillcornerClient class.
 
 Methods of SkillcornerClient are generated automatically using metaclass _MethodsGenerator. This metaclass, basing on pre-prepared dictionaries, freezes particular arguments which cannot be changed and generates proper method signature. 
