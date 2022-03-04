@@ -153,12 +153,6 @@ def _freeze_args(func, id_name=None, request_data=None, **kwargs):
                 kwargs['id'] = id_value
                 del kwargs[id_name]
 
-        if request_data:
-            if request_data in passed_kwargs:
-                request_data_value = passed_kwargs[request_data]
-                kwargs['request_data'] = request_data_value
-                del kwargs[request_data]
-
         kwargs.update(frozen_kwargs)
 
         return func(*args, **kwargs)
