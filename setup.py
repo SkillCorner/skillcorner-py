@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='skillcorner',
-    version='1.0.2',
+    version='1.0.3',
     description='SkillCorner API client',
     author='SkillCorner',
     author_email='support@skillcorner.com',
