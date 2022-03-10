@@ -9,6 +9,7 @@ from requests.auth import HTTPBasicAuth
 from makefun import create_function
 
 BASE_URL = 'https://skillcorner.com'
+DEFAULT_TIMEOUT = 70
 
 METHOD_DOCSTRING = 'Returns full {url} request response data in the json format. ' \
                    'To learn more about endpoint go to: https://skillcorner.com/api/docs/#{docs_url_anchor}\n'
@@ -192,11 +193,13 @@ class _MethodsGenerator(type):
         skcr_client = super().__new__(cls, classname, supers, cls_dict)
 
         for key, value in METHOD_URL_BINDING.items():
+            timeout = value.get('timeout', DEFAULT_TIMEOUT)
             setattr(skcr_client,
                     key,
                     _freeze_args(skcr_client._get_data,
                                  url=value['url'],
-                                 paginated_request=value['paginated_request']))
+                                 paginated_request=value['paginated_request'],
+                                 timeout=timeout))
             cls_dict[key.strip("_")] = skcr_client._generate_signature(key)
 
             docs_url_anchor = value.get('docs_url_anchor', False)
@@ -212,7 +215,8 @@ class _MethodsGenerator(type):
                     get_and_save_func_name,
                     _freeze_args(skcr_client._get_and_write_data,
                                  url=value['url'],
-                                 paginated_request=value['paginated_request']))
+                                 paginated_request=value['paginated_request'],
+                                 timeout=timeout))
             cls_dict[get_and_save_func_name.strip("_")] = skcr_client._generate_signature(get_and_save_func_name,
                                                                                           filepath=True)
 
@@ -225,7 +229,8 @@ class _MethodsGenerator(type):
             setattr(skcr_client, key, _freeze_args(skcr_client._get_data_with_id,
                                                    id_name=value["id_name"],
                                                    url=value['url'],
-                                                   paginated_request=value['paginated_request']))
+                                                   paginated_request=value['paginated_request'],
+                                                   timeout=timeout))
             cls_dict[key.strip("_")] = skcr_client._generate_signature(key, id_name=value['id_name'])
 
             docks_url = value['url'].split('{}')[0] + '{' + value['id_name'] + '}' + value['url'].split('{}')[1]
@@ -237,13 +242,15 @@ class _MethodsGenerator(type):
                 docstring = 'Returns full {url} request response data in the json format.'.format(url=value['url'])
             cls_dict[key.strip("_")].__doc__ = docstring
 
+            timeout = value.get('timeout', DEFAULT_TIMEOUT)
             get_and_save_method_name = key.replace('_get_', '_get_and_save_')
             setattr(skcr_client,
                     get_and_save_method_name,
                     _freeze_args(skcr_client._get_and_write_data_with_id,
                                  id_name=value["id_name"],
                                  url=value['url'],
-                                 paginated_request=value['paginated_request']))
+                                 paginated_request=value['paginated_request'],
+                                 timeout=timeout))
 
             cls_dict[get_and_save_method_name.strip("_")] = skcr_client._generate_signature(get_and_save_method_name,
                                                                                             filepath=True,
@@ -287,8 +294,7 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
         logger.debug(f'Base url: {self.base_url}')
 
     @_args_logging(logger)
-    def _skillcorner_request(self, url, method, params, paginated_request, json_data=None, pagination_limit=300,
-                             timeout=30):
+    def _skillcorner_request(self, url, method, params, paginated_request, timeout, json_data=None, pagination_limit=300):
         """Custom Skillcorner API request
 
         Custom request function using session object to persist parameters for Skillcorner host connection.
@@ -382,7 +388,7 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
 
             return data
 
-    def _get_data(self, *, url, paginated_request, params=None):
+    def _get_data(self, *, url, paginated_request, timeout, params=None):
         """General get... function
 
         Uses skillcorner request to get response from passed url without any additional parameters.
@@ -394,9 +400,10 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
         return self._skillcorner_request(url=url,
                                          method='GET',
                                          params=params,
-                                         paginated_request=paginated_request)
+                                         paginated_request=paginated_request,
+                                         timeout=timeout)
 
-    def _get_and_write_data(self, filepath, *, url, paginated_request, params=None):
+    def _get_and_write_data(self, filepath, *, url, paginated_request, timeout, params=None):
         """General get_and_write... function
 
         Uses skillcorner request to get response from passed url without any additional parameters and save
@@ -409,13 +416,14 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
         data = self._skillcorner_request(url=url,
                                          method='GET',
                                          params=params,
-                                         paginated_request=paginated_request)
+                                         paginated_request=paginated_request,
+                                         timeout=timeout)
 
         logger.info(f'Writing response to the file: {filepath}')
         with open(filepath, 'w') as file:
             json.dump(data, file, indent=4)
 
-    def _get_data_with_id(self, id, *, url, paginated_request, params=None):
+    def _get_data_with_id(self, id, *, url, paginated_request, timeout, params=None):
         """General get...(id) function
 
         Uses skillcorner request to get response from passed url with one parameter.
@@ -428,9 +436,10 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
         return self._skillcorner_request(url=url,
                                          method='GET',
                                          params=params,
-                                         paginated_request=paginated_request)
+                                         paginated_request=paginated_request,
+                                         timeout=timeout)
 
-    def _get_and_write_data_with_id(self, id, filepath, *, url, paginated_request, params=None):
+    def _get_and_write_data_with_id(self, id, filepath, *, url, paginated_request, timeout, params=None):
         """General get_and_write...(id) function
 
         Uses skillcorner request to get response from passed url with one parameter and save the response in JSON file.
@@ -443,7 +452,8 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
         data = self._skillcorner_request(url=url,
                                          method='GET',
                                          params=params,
-                                         paginated_request=paginated_request)
+                                         paginated_request=paginated_request,
+                                         timeout=timeout)
 
         logger.info(f'Writing response to the file: {filepath}')
         try:
