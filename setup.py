@@ -7,7 +7,7 @@ setup(
     author='SkillCorner',
     author_email='support@skillcorner.com',
     packages=['skillcorner'],
-    python_requires='>=3.6, <=3.9',
+    python_requires='>=3.6',
     install_requires=[
         'requests>=2.20.0',
         'makefun>=1.10.0'
