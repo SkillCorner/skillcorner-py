@@ -29,7 +29,8 @@ class MockSkillcornerClient(SkillcornerClient):
         super(MockSkillcornerClient, self).__init__(*args, **kwargs)
         logger.debug(f'Creating Skillcorner mock client instance')
 
-    def _skillcorner_request(self, url, method, params, paginated_request, timeout, pagination_limit=300):
+    def _skillcorner_request(self, url, method, params, paginated_request, timeout, output_format=None,
+                             visualisation=None, json_data=None, pagination_limit=300, **kwargs):
         """
         Mocked skillcorner_request method returning fake json response read from file.
 
