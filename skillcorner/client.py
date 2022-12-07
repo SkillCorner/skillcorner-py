@@ -42,7 +42,17 @@ METHOD_URL_BINDING = {
     '_get_physical': {
         'url': '/api/physical',
         'paginated_request': False,
-        'docs_url_anchor': '/physical/physical',
+        'docs_url_anchor': '/physical/physical_list',
+    },
+    '_get_in_possession_off_ball_runs': {
+        'url': '/api/in_possession/off_ball_runs/',
+        'paginated_request': False,
+        'docs_url_anchor': '/in_possession/in_possession_off_ball_runs_list',
+    },
+    '_get_in_possession_passes': {
+        'url': '/api/in_possession/passes/',
+        'paginated_request': False,
+        'docs_url_anchor': '/in_possession/in_possession_passes_list',
     }
 }
 
