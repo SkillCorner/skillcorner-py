@@ -53,6 +53,11 @@ METHOD_URL_BINDING = {
         'url': '/api/in_possession/passes/',
         'paginated_request': False,
         'docs_url_anchor': '/in_possession/in_possession_passes_list',
+    },
+    '_get_in_possession_on_ball_pressures': {
+        'url': '/api/in_possession/on_ball_pressures/',
+        'paginated_request': False,
+        'docs_url_anchor': '/in_possession/in_possession_on_ball_pressures_list',
     }
 }
 
