@@ -345,16 +345,12 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
                         if 'limit' in params.keys():
                             del (params['limit'])
 
-                    headers = {
-                        'referer': 'Skillcorner Client'
-                    }
                     skillcorner_response = skillcorner_session.request(url=url,
                                                                        method=method,
                                                                        json=json_data,
                                                                        params=params,
                                                                        auth=self.auth,
-                                                                       timeout=timeout,
-                                                                       headers=headers)
+                                                                       timeout=timeout)
                     skillcorner_response.raise_for_status()
                     resp = skillcorner_response.json()
                     request_duration = datetime.now() - start_timestamp
@@ -385,16 +381,12 @@ class SkillcornerClient(metaclass=_MethodsGenerator):
             else:
 
                 start_timestamp = datetime.now()
-                headers = {
-                    'referer': 'Skillcorner Client'
-                }
                 skillcorner_response = skillcorner_session.request(url=url,
                                                                    method=method,
                                                                    json=json_data,
                                                                    params=params,
                                                                    auth=self.auth,
-                                                                   timeout=timeout,
-                                                                   headers=headers)
+                                                                   timeout=timeout)
                 skillcorner_response.raise_for_status()
 
                 try:
